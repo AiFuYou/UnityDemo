@@ -56,7 +56,8 @@ public class AudioVisible : MonoBehaviour {
     }
     void GetSpectrumAduioSource()
     {
-        audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
+//        audioSource.GetSpectrumData(samples, 0, FFTWindow.Blackman);
+        audioSource.GetSpectrumData(samples, 0, FFTWindow.BlackmanHarris);
     }
     void MakeFrequencyBands()
     {
