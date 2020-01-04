@@ -272,9 +272,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1029956073}
-  - component: {fileID: 1029956074}
   - component: {fileID: 1029956076}
   - component: {fileID: 1029956075}
+  - component: {fileID: 1029956074}
   m_Layer: 0
   m_Name: AudioVisible2
   m_TagString: Untagged
