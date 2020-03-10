@@ -1,4 +1,4 @@
-﻿Shader "Custom/rainbow_1"
+﻿Shader "Custom/rainbow"
 {
     Properties
     {
