@@ -152,10 +152,17 @@ namespace Spine.Unity {
 				
 			SkeletonData loadedSkeletonData;
 
-			// try {
+			try {
 				if (isBinary)
+				{
+					byte[] a = null;
+					MainThread.RunTask(() =>
+					{
+						a = skeletonJSON.bytes;
+					});
 					loadedSkeletonData =
-						SkeletonDataAsset.ReadSkeletonData(skeletonJSON.bytes, attachmentLoader, skeletonDataScale);
+						SkeletonDataAsset.ReadSkeletonData(a, attachmentLoader, skeletonDataScale);
+				}
 				else
 				{
 					string a = "";
@@ -165,11 +172,11 @@ namespace Spine.Unity {
 					});
 					loadedSkeletonData = SkeletonDataAsset.ReadSkeletonData(a, attachmentLoader, skeletonDataScale);
 				}
-			// } catch (Exception ex) {
-			// 	if (!quiet)
-			// 		Debug.LogError("Error reading skeleton JSON file for SkeletonData asset: " + name + "\n" + ex.Message + "\n" + ex.StackTrace, this);
-			// 	return null;
-			// }
+			} catch (Exception ex) {
+				if (!quiet)
+					Debug.LogError("Error reading skeleton JSON file for SkeletonData asset: " + name + "\n" + ex.Message + "\n" + ex.StackTrace, this);
+				return null;
+			}
 
 			this.InitializeWithData(loadedSkeletonData);
 
