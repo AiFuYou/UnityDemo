@@ -14,23 +14,11 @@ public class SpineTest : MonoBehaviour
         var spineTestGameObject = transform.Find("spineTest").gameObject;
         spineTestGameObject.SetActive(false);
         var spineTestSkeletonExt = spineTestGameObject.AddComponent<SkeletonGraphicExt>();
-        var mat = Addressables.LoadAssetAsync<Material>("spineTestMat");
-        var data = Addressables.LoadAssetAsync<SkeletonDataAsset>("spineTestData");
+        var mat = await Addressables.LoadAssetAsync<Material>("spineTestMat").Task;
+        var data = await Addressables.LoadAssetAsync<SkeletonDataAsset>("spineTestData").Task;
 
-        while (!mat.IsDone || !data.IsDone)
-        {
-            await Task.Delay(1);
-        }
-
-        if (data.Status == AsyncOperationStatus.Succeeded)
-        {
-            spineTestSkeletonExt.skeletonDataAsset = data.Result;
-        }
-                
-        if (mat.Status == AsyncOperationStatus.Succeeded)
-        {
-            spineTestSkeletonExt.material = mat.Result;
-        }
+        spineTestSkeletonExt.skeletonDataAsset = data;
+        spineTestSkeletonExt.material = mat;
 
         await spineTestSkeletonExt.InitializeAsync();
 
