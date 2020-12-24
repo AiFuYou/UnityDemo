@@ -18,14 +18,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class XYState
+public class FSM
 {
     #region 参数
     /// <summary>
     /// 回调函数
     /// </summary>
     /// <param name="param"></param>
-    public delegate void XYCallbackFunc(params object[] param);
+    public delegate void FSMCallbackFunc(params object[] param);
     /// <summary>
     /// 状态名称
     /// </summary>
@@ -34,25 +34,25 @@ public class XYState
     /// <summary>
     /// 存储状态回调参数的字典
     /// </summary>
-    private readonly Dictionary<string, XYSimpleStateModel> _simpleStateDict = new Dictionary<string, XYSimpleStateModel>();
+    private readonly Dictionary<string, FSMSimpleStateModel> _simpleStateDict = new Dictionary<string, FSMSimpleStateModel>();
 
     /// <summary>
     /// 存储状态机转换StateModel用字典
     /// </summary>
-    private readonly Dictionary<string, XYTranslationStateModel> _translateStateDict = new Dictionary<string, XYTranslationStateModel>();
+    private readonly Dictionary<string, FSMTranslationStateModel> _translateStateDict = new Dictionary<string, FSMTranslationStateModel>();
 
     #endregion
 
 
     #region Model
     /// <summary>
-    /// 记录状态名称,和转换XYTranslation对象
+    /// 记录状态名称,和转换FSMTranslation对象
     /// </summary>
-    class XYTranslationStateModel
+    class FSMTranslationStateModel
     {
         private string _name;
 
-        public XYTranslationStateModel(string name)
+        public FSMTranslationStateModel(string name)
         {
             _name = name;
         }
@@ -60,17 +60,17 @@ public class XYState
         /// <summary>
         /// 记录状态名和转换状态对象的字典
         /// </summary>
-        public readonly Dictionary<string, XYTranslateModel> TranslationDict = new Dictionary<string, XYTranslateModel>();
+        public readonly Dictionary<string, FSMTranslateModel> TranslationDict = new Dictionary<string, FSMTranslateModel>();
     }
 
     /// <summary>
     /// 简易回调数据模型
     /// </summary>
-    public class XYSimpleStateModel
+    public class FSMSimpleStateModel
     {
         public string State;
-        public XYCallbackFunc CallbackFunc;
-        public XYSimpleStateModel(string state, XYCallbackFunc callBackFunc)
+        public FSMCallbackFunc CallbackFunc;
+        public FSMSimpleStateModel(string state, FSMCallbackFunc callBackFunc)
         {
             State = state;
             CallbackFunc = callBackFunc;
@@ -80,14 +80,14 @@ public class XYState
     /// <summary>
     /// 状态转换数据模型
     /// </summary>
-    public class XYTranslateModel
+    public class FSMTranslateModel
     {
         public string FromState;
         public string Name;
         public string ToState;
-        public XYCallbackFunc OnTranslationCallback;// 回调函数
+        public FSMCallbackFunc OnTranslationCallback;// 回调函数
 
-        public XYTranslateModel(string fromState,string name,string toState,XYCallbackFunc onTranslationCallback)
+        public FSMTranslateModel(string fromState,string name,string toState,FSMCallbackFunc onTranslationCallback)
         {
             FromState = fromState;
             Name = name;
@@ -107,7 +107,7 @@ public class XYState
     /// <param name="name">状态名称</param>
     public void AddState(string name)
     {
-        _translateStateDict[name] = new XYTranslationStateModel(name);
+        _translateStateDict[name] = new FSMTranslationStateModel(name);
     }
 
     /// <summary>
@@ -124,22 +124,21 @@ public class XYState
     /// </summary>
     /// <param name="state">状态名称</param>
     /// <param name="callbackFunc">回调方法</param>
-    /// <param name="param">回调参数</param>
-    public void AddSimpleState(string state, XYCallbackFunc callbackFunc)
+    public void AddSimpleState(string state, FSMCallbackFunc callbackFunc)
     {
-        _simpleStateDict[state] = new XYSimpleStateModel(state, callbackFunc);
+        _simpleStateDict[state] = new FSMSimpleStateModel(state, callbackFunc);
     }
 
     /// <summary>
     /// 添加一种转换状态监听
     /// </summary>
+    /// <param name="translateName">转换行为名称</param>
     /// <param name="fromState">原来是那种状态</param>
-    /// <param name="name">转换行为名称</param>
     /// <param name="toState">转换为那种状态</param>
     /// <param name="callbackFunc">回调方法</param>
-    public void AddTranslateState(string fromState,string name,string toState, XYCallbackFunc callbackFunc)
+    public void AddTranslateState(string translateName, string fromState, string toState, FSMCallbackFunc callbackFunc)
     {
-        _translateStateDict[fromState].TranslationDict[name] = new XYTranslateModel(fromState, name, toState, callbackFunc);
+        _translateStateDict[fromState].TranslationDict[translateName] = new FSMTranslateModel(fromState, translateName, toState, callbackFunc);
     }
 
 
@@ -155,7 +154,7 @@ public class XYState
             Debug.LogError("未找到这个状态");
             return;
         }
-        XYSimpleStateModel simple = _simpleStateDict[state];
+        FSMSimpleStateModel simple = _simpleStateDict[state];
         simple.CallbackFunc(param);
         State = state;
     }
@@ -177,7 +176,7 @@ public class XYState
               Debug.LogError("未找到这个转换状态");
             return;
         }
-        XYTranslateModel tempTranslation = _translateStateDict[State].TranslationDict[name];
+        FSMTranslateModel tempTranslation = _translateStateDict[State].TranslationDict[name];
         tempTranslation.OnTranslationCallback(param);
         State = tempTranslation.ToState;
        

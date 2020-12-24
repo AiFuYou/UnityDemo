@@ -10,39 +10,34 @@ public class Player : MonoBehaviour
     private Quaternion _quaternion = Quaternion.Euler(0, 0, 0);
     private readonly float _playerRotationZSpeed = 5f;
     private readonly Vector2 _jumpV = new Vector2(0, 30);
-    private XYState _playerState = new XYState();
+    private FSM _playerState = new FSM();
     private void Start()
     {
         _playerState.AddState(PlayerState.Run);
         _playerState.AddState(PlayerState.Jump);
         _playerState.AddState(PlayerState.DoubleJump);
         
-        _playerState.AddTranslateState(PlayerState.Run, PlayerEvent.EVENT_JUMP, PlayerState.Jump, o =>
+        _playerState.AddTranslateState(PlayerEvent.EVENT_JUMP, PlayerState.Run, PlayerState.Jump, o =>
         {
             Jump();
         });
         
-        _playerState.AddTranslateState(PlayerState.Jump, PlayerEvent.EVENT_JUMP, PlayerState.DoubleJump, o =>
+        _playerState.AddTranslateState(PlayerEvent.EVENT_JUMP, PlayerState.Jump, PlayerState.DoubleJump, o =>
         {
             DoubleJump();
         });
         
-        _playerState.AddTranslateState(PlayerState.Jump, PlayerEvent.EVENT_RUN, PlayerState.Run, o =>
+        _playerState.AddTranslateState(PlayerEvent.EVENT_RUN, PlayerState.Jump, PlayerState.Run, o =>
+        {
+            Run();
+        });
+
+        _playerState.AddTranslateState(PlayerEvent.EVENT_RUN, PlayerState.DoubleJump, PlayerState.Run, o =>
         {
             Run();
         });
         
-        _playerState.AddTranslateState(PlayerState.Run, PlayerEvent.EVENT_RUN, PlayerState.Run, o =>
-        {
-            Run();
-        });
-        
-        _playerState.AddTranslateState(PlayerState.DoubleJump, PlayerEvent.EVENT_RUN, PlayerState.Run, o =>
-        {
-            Run();
-        });
-        
-        _playerState.StartState(PlayerState.Run);
+        _playerState.StartState(PlayerState.Jump);
         State = _playerState;
     }
 
@@ -78,7 +73,7 @@ public class Player : MonoBehaviour
         Jump();
     }
 
-    public XYState State
+    public FSM State
     {
         get => _playerState;
         private set => _playerState = value;
