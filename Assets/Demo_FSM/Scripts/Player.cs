@@ -61,16 +61,19 @@ public class Player : MonoBehaviour
     {
         _isRunning = false;
         GetComponent<Rigidbody2D>().velocity = _jumpV;
+        GetComponent<SpriteRenderer>().color = Color.red;
     }
 
     public void Run()
     {
         _isRunning = true;
+        GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     public void DoubleJump()
     {
         Jump();
+        GetComponent<SpriteRenderer>().color = Color.blue;
     }
 
     public FSM State
