@@ -57,6 +57,19 @@ public class MainThread
             runner.Wait();
         }
     }
+    
+    public static void AddTask(Action act)
+    {
+        if (IsMainThread())
+        {
+            act.Invoke();
+        }
+        else
+        {
+            var runner = new ActionRunner(act);
+            _taskExecutor.AddAct(runner);
+        }
+    }
 
     private static bool IsMainThread()
     {
