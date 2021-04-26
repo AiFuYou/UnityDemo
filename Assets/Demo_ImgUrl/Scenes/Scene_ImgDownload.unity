@@ -1077,7 +1077,7 @@ MonoBehaviour:
   asyncThreadProgressText: {fileID: 512237613}
   asyncThreadTimeText: {fileID: 664886952}
   asyncThreadBtn: {fileID: 611661658}
-  openUpdate: 1
+  openUpdate: 0
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
