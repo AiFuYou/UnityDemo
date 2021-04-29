@@ -15,3 +15,6 @@ https://www.ifeelgame.net/unity/%e5%9c%a8unity%e4%b8%ad%e4%bd%bf%e7%94%a8%e6%9c%
 ## Demo_ImgUrl
 加载网络图片
 https://www.ifeelgame.net/unity/%e5%9c%a8unity%e7%9a%84ugui%e4%b8%ad%e4%bd%bf%e7%94%a8%e7%bd%91%e7%bb%9c%e5%9b%be%e7%89%87%e7%9a%844%e7%a7%8d%e6%96%b9%e5%bc%8f%e5%8f%8a%e6%80%a7%e8%83%bd%e5%af%b9%e6%af%94/
+
+## Demo_Rainbow
+彩虹字
