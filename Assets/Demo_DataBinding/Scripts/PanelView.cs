@@ -1,6 +1,4 @@
-using System.ComponentModel;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class PanelView : ViewBase
@@ -9,21 +7,47 @@ public class PanelView : ViewBase
     public TMP_InputField inputFieldPassword;
     public Button btnCancel;
     public Button btnOk;
+    public TMP_Text textAccount;
+    public TMP_Text textPassword;
 
-    private PanelViewModel vm;
+    private PanelViewModel _vm;
+
     private void Awake()
     {
-        vm = new PanelViewModel();
-        vm.PropertyChanged += (sender, e) =>
+        _vm = new PanelViewModel();
+        _vm.PropertyChanged += (sender, e) =>
         {
-            Debug.Log(sender.ToString());
-            Debug.Log(e.PropertyName);
+            switch (e.PropertyName)
+            {
+                case "InputTextAccount":
+                    textAccount.text = _vm.InputTextAccount;
+                    break;
+                case "InputTextPassword":
+                    textPassword.text = _vm.InputTextPassword;
+                    break;
+            }
         };
     }
 
     private void Start()
     {
-        vm.InputTextAccount = "123";
-        vm.InputTextPassword = "abc";
+        inputFieldAccount.onValueChanged.AddListener(OnInputFieldAccountValueChanged);
+        inputFieldPassword.onValueChanged.AddListener(OnInputFieldPasswordValueChanged);
+    }
+
+    private void OnInputFieldAccountValueChanged(string str)
+    {
+        _vm.InputTextAccount = str;
+    }
+    
+    private void OnInputFieldPasswordValueChanged(string str)
+    {
+        _vm.InputTextPassword = str;
+    }
+
+    private void OnDestroy()
+    {
+        inputFieldAccount.onValueChanged.RemoveListener(OnInputFieldAccountValueChanged);
+        inputFieldPassword.onValueChanged.RemoveListener(OnInputFieldPasswordValueChanged);
     }
 }
