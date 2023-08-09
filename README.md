@@ -25,3 +25,6 @@ https://www.ifeelgame.net/unity/%e5%9c%a8unity%e7%9a%84ugui%e4%b8%ad%e4%bd%bf%e7
 ## Demo_TurnBased\_Ex
 Demo_TurnBased\_Ex
 回合制游戏小Demo，跟上面的效果一样，对代码进行了优化
+
+## Demo_GuideMask
+两个点击穿透的Demo，第二个适合做游戏新手引导遮罩时使用
